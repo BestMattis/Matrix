@@ -9,7 +9,11 @@ MatrixBlock[][] matrix1 = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] matrix2 = new MatrixBlock[rows2][cols2];
 MatrixBlock[][] bufferMatrix = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] resultMatrix = new MatrixBlock[rows2][cols2];
-Buttons operationUI;
+Buttons add = new Buttons(50,400,"operationAdd");
+Buttons mult = new Buttons(110,400,"operationMult");
+Buttons sub = new Buttons(170,400,"operationSub");
+Buttons det = new Buttons(230,400,"operationDet");
+Buttons switchAB = new Buttons(50,340,"operationSwitch");
 Buttons matrix1RowsIncrease = new Buttons(10, 20, "matrix1RowsIncrease");
 Buttons matrix1ColsIncrease = new Buttons(20, 10, "matrix1ColsIncrease");
 
@@ -33,7 +37,11 @@ void setup() {
   incDec.add(matrix2RowsDecrease);
   incDec.add(matrix2ColsIncrease);
   incDec.add(matrix2ColsDecrease);
-  operationUI = new Buttons(260, 110, "opreations");
+  operations.add(add);
+  operations.add(sub);
+  operations.add(mult);
+  operations.add(det);
+  operations.add(switchAB);
   for (int i = 0; i < cols1; i++) {
     for (int h = 0; h < rows1; h++) {
       matrix1[h][i] = new MatrixBlock(h, i);
@@ -52,7 +60,10 @@ void setup() {
 }
 void draw() {
   background(0);
-  operationUI.show();
+  for(Buttons button : operations){
+    button.show();
+    button.update();
+  }
   for (Buttons button : incDec) {
     button.show();
     button.update();
@@ -70,10 +81,30 @@ void draw() {
     }
   }
 }
-void mouseClicked() {
-  if (dist(mouseX, mouseY, operationUI.getPos().x, operationUI.getPos().y) < operationUI.getRad()) {
-    visible = true;
+
+void switchMatrix(){
+  bufferMatrix = new MatrixBlock[rows1][cols1];
+  for (int i = 0; i < cols1; i++) {
+    for (int h = 0; h < rows1; h++) {
+      bufferMatrix[h][i].num = matrix1[h][i].num;
+      bufferMatrix[h][i].input = matrix1[h][i].input; 
+    }
   }
+  matrix1 = new MatrixBlock[rows2][cols2];
+  for (int i = 0; i < cols2; i++) {
+    for (int h = 0; h < rows2; h++) {
+      matrix1[h][i].num = matrix2[h][i].num;
+      matrix1[h][i].input = matrix2[h][i].input; 
+    }
+  }
+  matrix2 = new MatrixBlock[rows1][cols1];
+  for (int i = 0; i < cols1; i++) {
+    for (int h = 0; h < rows1; h++) {
+      matrix2[h][i].num = bufferMatrix[h][i].num;
+      matrix2[h][i].input = bufferMatrix[h][i].input; 
+    }
+  }
+  
 }
 
 void safeMatrix(int index) {

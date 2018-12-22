@@ -1,6 +1,7 @@
 class Buttons {
   int posX;
   int posY;
+  int sizeOperation = 50;
   int sizeIN = 35;
   int sizeBox = 16;
   int rad = sizeIN/2;
@@ -19,7 +20,26 @@ class Buttons {
     return rad;
   }
   void show() {
-    if (name.contains("matrix")) {
+    if(this.name.contains("operation")){
+      pushMatrix();
+      stroke(255);
+      noFill();
+      textAlign(CENTER);
+      if(this.name.contains("Add")){
+        text("A + B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if(this.name.contains("Sub")){
+        text("A - B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if(this.name.contains("Mult")){
+        text("A * B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if(this.name.contains("Det")){
+        text("Det A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if(this.name.contains("Switch")){
+        text("  A <-> B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      }
+      rect(posX,posY,sizeOperation,sizeOperation);
+      popMatrix();
+    }
+    if (this.name.contains("matrix")) {
       pushMatrix();
       stroke(255);
       noFill();
@@ -57,6 +77,14 @@ class Buttons {
   }
 
   void update() {
+    if(mousePressed && mouseButton == LEFT && this.posY + sizeOperation > mouseY && this.posY < mouseY && this.posX+sizeOperation > mouseX && this.posX < mouseX){
+      if(this.name.contains("Switch")){
+        if(!clickTimeOut){
+          switchMatrix(); 
+        }
+        clickTimeOut = true;
+      }
+    }
     if (!mousePressed) {
       clickTimeOut = false;
     }
