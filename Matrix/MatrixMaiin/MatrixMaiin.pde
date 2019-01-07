@@ -2,6 +2,7 @@ int rows1 = 4;
 int cols1 = 4;
 int rows2 = 4;
 int cols2 = 4;
+int matrix2Offset = 0;
 static boolean stop = false;
 boolean visible = false;
 boolean clickTimeOut = false;
@@ -9,11 +10,11 @@ MatrixBlock[][] matrix1 = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] matrix2 = new MatrixBlock[rows2][cols2];
 MatrixBlock[][] bufferMatrix = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] resultMatrix = new MatrixBlock[rows2][cols2];
-Buttons add = new Buttons(50,400,"operationAdd");
-Buttons mult = new Buttons(110,400,"operationMult");
-Buttons sub = new Buttons(170,400,"operationSub");
-Buttons det = new Buttons(230,400,"operationDet");
-Buttons switchAB = new Buttons(50,340,"operationSwitch");
+Buttons add = new Buttons(10,440,"operationAdd");
+Buttons mult = new Buttons(70,440,"operationMult");
+Buttons sub = new Buttons(130,440,"operationSub");
+Buttons det = new Buttons(190,440,"operationDet");
+Buttons switchAB = new Buttons(10,380,"operationSwitch");
 Buttons matrix1RowsIncrease = new Buttons(10, 20, "matrix1RowsIncrease");
 Buttons matrix1ColsIncrease = new Buttons(20, 10, "matrix1ColsIncrease");
 
@@ -68,14 +69,14 @@ void draw() {
     button.show();
     button.update();
   }
-  for (int i = 0; i < cols1; i++) {
-    for (int h = 0; h < rows1; h++) {
+  for (int i = 0; i < matrix1[0].length; i++) {
+    for (int h = 0; h < matrix1.length; h++) {
       matrix1[h][i].show();
       matrix1[h][i].update();
     }
   }
-  for (int i = 0; i < cols2; i++) {
-    for (int h = 0; h < rows2; h++) {
+  for (int i = 0; i < matrix2[0].length; i++) {
+    for (int h = 0; h < matrix2.length; h++) {
       matrix2[h][i].show();
       matrix2[h][i].update();
     }
@@ -83,23 +84,40 @@ void draw() {
 }
 
 void switchMatrix(){
-  bufferMatrix = new MatrixBlock[rows1][cols1];
-  for (int i = 0; i < cols1; i++) {
-    for (int h = 0; h < rows1; h++) {
+  bufferMatrix = new MatrixBlock[matrix1.length][matrix1[0].length];
+  for (int i = 0; i < matrix1[0].length; i++) {
+    for (int h = 0; h < matrix1.length; h++) {
+      bufferMatrix[h][i] = new MatrixBlock(h,i);
+    }
+  }
+  for (int i = 0; i < matrix1[0].length; i++) {
+    for (int h = 0; h < matrix1.length; h++) {
+      println(matrix1[h][i].num+" "+h+" "+i+" "+ cols1 + "  " + rows1);
       bufferMatrix[h][i].num = matrix1[h][i].num;
       bufferMatrix[h][i].input = matrix1[h][i].input; 
     }
   }
-  matrix1 = new MatrixBlock[rows2][cols2];
-  for (int i = 0; i < cols2; i++) {
-    for (int h = 0; h < rows2; h++) {
+  println(" m2 ");
+  matrix1 = new MatrixBlock[matrix2.length][matrix2[0].length];
+  for (int i = 0; i < matrix2[0].length; i++) {
+    for (int h = 0; h < matrix2.length; h++) {
+      matrix1[h][i] = new MatrixBlock(h,i);
+    }
+  }
+  for (int i = 0; i < matrix2[0].length; i++) {
+    for (int h = 0; h < matrix2.length; h++) {
       matrix1[h][i].num = matrix2[h][i].num;
       matrix1[h][i].input = matrix2[h][i].input; 
     }
   }
-  matrix2 = new MatrixBlock[rows1][cols1];
-  for (int i = 0; i < cols1; i++) {
-    for (int h = 0; h < rows1; h++) {
+  matrix2 = new MatrixBlock[bufferMatrix.length][bufferMatrix[0].length];
+  for (int i = 0; i < bufferMatrix[0].length; i++) {
+    for (int h = 0; h < bufferMatrix.length; h++) {
+      matrix2[h][i] = new MatrixBlock(h+matrix1.length+2,i);
+    }
+  }
+  for (int i = 0; i < bufferMatrix[0].length; i++) {
+    for (int h = 0; h < bufferMatrix.length; h++) {
       matrix2[h][i].num = bufferMatrix[h][i].num;
       matrix2[h][i].input = bufferMatrix[h][i].input; 
     }
@@ -116,13 +134,13 @@ void safeMatrix(int index) {
 }
 void setMatrixFromBuffer(int index) {
   if (index == 1) {
-    for (int i = 0; i < cols1; i++) {
-      for (int h = 0; h < rows1; h++) {
+    for (int i = 0; i < matrix1[0].length; i++) {
+      for (int h = 0; h < matrix1.length; h++) {
         matrix1[h][i] = new MatrixBlock(h, i);
       }
     }
-    for (int i = 0; i < cols1; i++) {
-      for (int h = 0; h < rows1; h++) {
+    for (int i = 0; i < matrix1[0].length; i++) {
+      for (int h = 0; h < matrix1.length; h++) {
         if (bufferMatrix.length <= h || bufferMatrix[0].length <= i) {
           matrix1[h][i] = new MatrixBlock(h, i);
         } else {
@@ -133,15 +151,15 @@ void setMatrixFromBuffer(int index) {
     }
     bufferMatrix = new MatrixBlock[rows1][cols1];
   } else if (index == 2) {
-    for (int i = 0; i < cols2; i++) {
-      for (int h = 0; h < rows2; h++) {
+    for (int i = 0; i < matrix2[0].length; i++) {
+      for (int h = 0; h < matrix2.length; h++) {
         matrix2[h][i] = new MatrixBlock(h, i);
       }
     }
-    for (int i = 0; i < cols2; i++) {
-      for (int h = 0; h < rows2; h++) {
+    for (int i = 0; i < matrix2[0].length; i++) {
+      for (int h = 0; h < matrix2.length; h++) {
         if (bufferMatrix.length <= h || bufferMatrix[0].length <= i) {
-          matrix2[h][i] = new MatrixBlock(h+6, i);
+          matrix2[h][i] = new MatrixBlock(h+6+matrix2Offset/50, i);
         } else {
           matrix2[h][i].num = bufferMatrix[h][i].num; 
           matrix2[h][i].x = bufferMatrix[h][i].x;
