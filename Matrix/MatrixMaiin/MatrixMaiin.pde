@@ -2,7 +2,6 @@ int rows1 = 4;
 int cols1 = 4;
 int rows2 = 4;
 int cols2 = 4;
-int matrix2Offset = 0;
 static boolean stop = false;
 boolean visible = false;
 boolean clickTimeOut = false;
@@ -10,26 +9,26 @@ MatrixBlock[][] matrix1 = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] matrix2 = new MatrixBlock[rows2][cols2];
 MatrixBlock[][] bufferMatrix = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] resultMatrix = new MatrixBlock[rows2][cols2];
-Buttons add = new Buttons(10,440,"operationAdd");
-Buttons mult = new Buttons(70,440,"operationMult");
-Buttons sub = new Buttons(130,440,"operationSub");
-Buttons det = new Buttons(190,440,"operationDet");
-Buttons switchAB = new Buttons(10,380,"operationSwitch");
+Buttons add = new Buttons(10,640,"operationAdd");
+Buttons mult = new Buttons(70,640,"operationMult");
+Buttons sub = new Buttons(130,640,"operationSub");
+Buttons det = new Buttons(190,640,"operationDet");
+Buttons switchAB = new Buttons(10,580,"operationSwitch");
 Buttons matrix1RowsIncrease = new Buttons(10, 20, "matrix1RowsIncrease");
 Buttons matrix1ColsIncrease = new Buttons(20, 10, "matrix1ColsIncrease");
 
 Buttons matrix1RowsDecrease = new Buttons(30, 20, "matrix1RowsDecrease");
 Buttons matrix1ColsDecrease = new Buttons(40, 10, "matrix1ColsDecrease");
 
-Buttons matrix2RowsIncrease = new Buttons(310, 20, "matrix2RowsIncrease");
-Buttons matrix2RowsDecrease = new Buttons(330, 20, "matrix2RowsDecrease");
+Buttons matrix2RowsIncrease = new Buttons(110, 20, "matrix2RowsIncrease");
+Buttons matrix2RowsDecrease = new Buttons(130, 20, "matrix2RowsDecrease");
 
-Buttons matrix2ColsIncrease = new Buttons(320, 10, "matrix2ColsIncrease");
-Buttons matrix2ColsDecrease = new Buttons(340, 10, "matrix2ColsDecrease");
+Buttons matrix2ColsIncrease = new Buttons(120, 10, "matrix2ColsIncrease");
+Buttons matrix2ColsDecrease = new Buttons(140, 10, "matrix2ColsDecrease");
 ArrayList<Buttons> operations = new ArrayList<Buttons>(); 
 ArrayList<Buttons> incDec = new ArrayList<Buttons>();
 void setup() {
-  size(900, 500);
+  size(915, 700);
   incDec.add(matrix1RowsIncrease);
   incDec.add(matrix1ColsIncrease);
   incDec.add(matrix1RowsDecrease);
@@ -81,6 +80,10 @@ void draw() {
       matrix2[h][i].update();
     }
   }
+  stroke(255);
+  line(0,346,width,346);
+  line(250,346,250,height);
+  text("Result : ", 280,360);
 }
 
 void switchMatrix(){
@@ -92,12 +95,10 @@ void switchMatrix(){
   }
   for (int i = 0; i < matrix1[0].length; i++) {
     for (int h = 0; h < matrix1.length; h++) {
-      println(matrix1[h][i].num+" "+h+" "+i+" "+ cols1 + "  " + rows1);
       bufferMatrix[h][i].num = matrix1[h][i].num;
       bufferMatrix[h][i].input = matrix1[h][i].input; 
     }
   }
-  println(" m2 ");
   matrix1 = new MatrixBlock[matrix2.length][matrix2[0].length];
   for (int i = 0; i < matrix2[0].length; i++) {
     for (int h = 0; h < matrix2.length; h++) {
@@ -159,7 +160,7 @@ void setMatrixFromBuffer(int index) {
     for (int i = 0; i < matrix2[0].length; i++) {
       for (int h = 0; h < matrix2.length; h++) {
         if (bufferMatrix.length <= h || bufferMatrix[0].length <= i) {
-          matrix2[h][i] = new MatrixBlock(h+6+matrix2Offset/50, i);
+          matrix2[h][i] = new MatrixBlock(h+2+matrix1.length, i);
         } else {
           matrix2[h][i].num = bufferMatrix[h][i].num; 
           matrix2[h][i].x = bufferMatrix[h][i].x;

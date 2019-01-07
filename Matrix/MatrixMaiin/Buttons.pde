@@ -59,16 +59,16 @@ class Buttons {
         }
       } else if (this.name.contains("2")) {
         if (this.name.contains("Rows")) {
-          rect(posX, posY+matrix2[0].length*50, sizeBox, sizeBox);
-          line(posX+2, posY+sizeBox/2+matrix2[0].length*50, posX+sizeBox-2, posY+sizeBox/2+matrix2[0].length*50);
+          rect(posX+matrix1.length*50, posY+matrix2[0].length*50, sizeBox, sizeBox);
+          line(posX+2+matrix1.length*50, posY+sizeBox/2+matrix2[0].length*50, posX+sizeBox-2+matrix1.length*50, posY+sizeBox/2+matrix2[0].length*50);
           if (name.contains("Increase")) {  
-            line(posX+sizeBox/2, posY+2+matrix2[0].length*50, posX+sizeBox/2, posY+sizeBox-2+matrix2[0].length*50);
+            line(posX+sizeBox/2+matrix1.length*50, posY+2+matrix2[0].length*50, posX+sizeBox/2+matrix1.length*50, posY+sizeBox-2+matrix2[0].length*50);
           }
         } else if (this.name.contains("Cols")) {
-          rect(posX+matrix2.length*50, posY, sizeBox, sizeBox);
-          line(posX+2+matrix2.length*50, posY+sizeBox/2, posX+sizeBox-2+matrix2.length*50, posY+sizeBox/2);
+          rect(posX+matrix2.length*50+matrix1.length*50, posY, sizeBox, sizeBox);
+          line(posX+2+matrix2.length*50+matrix1.length*50, posY+sizeBox/2, posX+sizeBox-2+matrix2.length*50+matrix1.length*50, posY+sizeBox/2);
           if (name.contains("Increase")) {  
-            line(posX+sizeBox/2+matrix2.length*50, posY+2, posX+sizeBox/2+matrix2.length*50, posY+sizeBox-2);
+            line(posX+sizeBox/2+matrix2.length*50+matrix1.length*50, posY+2, posX+sizeBox/2+matrix2.length*50+matrix1.length*50, posY+sizeBox-2);
           }
         }
       }
@@ -83,6 +83,26 @@ class Buttons {
           switchMatrix(); 
         }
         clickTimeOut = true;
+      } else if(this.name.contains("Add")){
+        if(!clickTimeOut){
+          println("add");
+        }
+        clickTimeOut = true;
+      } else if(this.name.contains("Mult")){
+        if(!clickTimeOut){
+          println("mult"); 
+        }
+        clickTimeOut = true;
+      } else if(this.name.contains("Sub")){
+        if(!clickTimeOut){
+          println("sub"); 
+        }
+        clickTimeOut = true;
+      } else if(this.name.contains("Det")){
+        if(!clickTimeOut){
+          println("det"); 
+        }
+        clickTimeOut = true;
       }
     }
     if (!mousePressed) {
@@ -92,26 +112,20 @@ class Buttons {
       (mouseX > posX && mouseX < posX + sizeBox && mouseY > posY+matrix1[0].length*50 && mouseY < posY+sizeBox+matrix1[0].length*50 && mousePressed && this.name.contains("matrix1RowsDecrease"))||
       (mouseX > posX+matrix1.length*50 && mouseX < posX + sizeBox +matrix1.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix1ColsIncrease"))|| 
       (mouseX > posX+matrix1.length*50 && mouseX < posX + sizeBox +matrix1.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix1ColsDecrease"))|| 
-      (mouseX > posX && mouseX < posX + sizeBox && mouseY > posY +matrix2[0].length*50 && mouseY < posY+sizeBox +matrix2[0].length*50 && mousePressed && this.name.contains("matrix2RowsIncrease"))||
-      (mouseX > posX && mouseX < posX + sizeBox && mouseY > posY +matrix2[0].length*50 && mouseY < posY+sizeBox +matrix2[0].length*50 && mousePressed && this.name.contains("matrix2RowsDecrease"))||
-      (mouseX > posX+matrix2.length*50 && mouseX < posX + sizeBox +matrix2.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix2ColsIncrease"))||
-      (mouseX > posX+matrix2.length*50 && mouseX < posX + sizeBox +matrix2.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix2ColsDecrease"))) {
+      (mouseX > posX+matrix1.length*50 && mouseX < posX + sizeBox+matrix1.length*50 && mouseY > posY +matrix2[0].length*50 && mouseY < posY+sizeBox +matrix2[0].length*50 && mousePressed && this.name.contains("matrix2RowsIncrease"))||
+      (mouseX > posX+matrix1.length*50 && mouseX < posX + sizeBox+matrix1.length*50 && mouseY > posY +matrix2[0].length*50 && mouseY < posY+sizeBox +matrix2[0].length*50 && mousePressed && this.name.contains("matrix2RowsDecrease"))||
+      (mouseX > posX+matrix2.length*50+matrix1.length*50 && mouseX < posX + sizeBox +matrix2.length*50+matrix1.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix2ColsIncrease"))||
+      (mouseX > posX+matrix2.length*50+matrix1.length*50 && mouseX < posX + sizeBox +matrix2.length*50+matrix1.length*50 && mouseY > posY && mouseY < posY+sizeBox && mousePressed && this.name.contains("matrix2ColsDecrease"))) {
       if (this.name.contains("matrix1")) {
         if (this.name.contains("Increase")) {
           if (this.name.contains("Cols")) {
             if (!clickTimeOut) {
-              matrix2Offset += 50;
               safeMatrix(1);
               matrix1 = new MatrixBlock[matrix1.length+1][matrix1[0].length];
               setMatrixFromBuffer(1);
               for(int i = 0;  i < matrix2[0].length;i++){
                 for(int h = 0; h < matrix2.length; h++){
                    matrix2[h][i].x += 50;   
-                }
-              }
-              for(Buttons button : incDec){
-                if(button.name.contains("2")){
-                  button.posX += 50;
                 }
               }
             }
@@ -127,18 +141,12 @@ class Buttons {
         } else if (this.name.contains("Decrease")) {
           if (this.name.contains("Cols")) {
             if (!clickTimeOut) {
-              matrix2Offset -= 50;
               safeMatrix(1);
               matrix1 = new MatrixBlock[matrix1.length-1][matrix1[0].length];
               setMatrixFromBuffer(1);
               for(int i = 0;  i < matrix2[0].length;i++){
                 for(int h = 0; h < matrix2.length; h++){
                    matrix2[h][i].x -= 50;   
-                }
-              }
-              for(Buttons button : incDec){
-                if(button.name.contains("2")){
-                  button.posX -= 50;
                 }
               }
             }
