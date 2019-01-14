@@ -117,8 +117,8 @@ class Buttons {
         }
         clickTimeOut = true;
       } else if (this.name.contains("Add")) {
-        MatrixOperator op = new MatrixOperator();
         if (!clickTimeOut) {
+          MatrixOperator op = new MatrixOperator();
           Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
           Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
           try {
@@ -132,12 +132,30 @@ class Buttons {
         clickTimeOut = true;
       } else if (this.name.contains("Mult")) {
         if (!clickTimeOut) {
-          println("mult");
+          MatrixOperator op = new MatrixOperator();
+          Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
+          Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
+          try {
+            Matrix result = op.matrixMult(m1, m2);
+            resultMatrix = setResultMatrix(result);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
         }
         clickTimeOut = true;
       } else if (this.name.contains("Sub")) {
         if (!clickTimeOut) {
-          println("sub");
+          MatrixOperator op = new MatrixOperator();
+          Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
+          Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
+          try {
+            Matrix result = op.matrixSubtakt(m1, m2);
+            resultMatrix = setResultMatrix(result);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
         }
         clickTimeOut = true;
       } else if (this.name.contains("Det")) {
