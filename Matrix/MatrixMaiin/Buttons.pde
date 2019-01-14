@@ -6,6 +6,7 @@ class Buttons {
   int sizeBox = 16;
   int rad = sizeIN/2;
   String name;
+  String numbers;
   PVector pos;
   Buttons(int x, int y, String boxName) {
     posX = x;
@@ -19,24 +20,56 @@ class Buttons {
   public int getRad() {
     return rad;
   }
+  public MatrixBlock[][] setResultMatrix(Matrix m) {
+    MatrixBlock[][] resultMatrixArray = new MatrixBlock[m.getNumberOfColums()][m.getNumberOfRows()];
+    for (int i = 0; i < resultMatrixArray[0].length; i++) {
+      for (int h = 0; h < resultMatrixArray.length; h++) {
+        resultMatrixArray[h][i] = new MatrixBlock(h+5, i+7);
+      }
+    }
+    double[][] numb = m.getMatrix();
+    for (int i = 0; i < resultMatrixArray[0].length; i++) {
+      for (int h = 0; h < resultMatrixArray.length; h++) {
+        resultMatrixArray[h][i].num = numb[i][h];
+        resultMatrixArray[h][i].input = Integer.toString((int)numb[i][h]);
+      }
+    }
+    return resultMatrixArray;
+  }
+  public String getNumberString(MatrixBlock[][] m) {
+    String numberString = new String();
+      for (int i = 0; i < m[0].length; i++) {
+        for (int h = 0; h < m.length; h++) {
+          numberString += m[h][i].input;
+          if (h < m.length -1 ) {
+            numberString += ",";
+          }
+        }
+        if (i < m[0].length-1) {
+          numberString += ";";
+        }
+      }
+    return numberString;
+  }
   void show() {
-    if(this.name.contains("operation")){
+    if (this.name.contains("operation")) {
       pushMatrix();
       stroke(255);
       noFill();
       textAlign(CENTER);
-      if(this.name.contains("Add")){
+      textSize(11);
+      if (this.name.contains("Add")) {
         text("A + B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
-      } else if(this.name.contains("Sub")){
+      } else if (this.name.contains("Sub")) {
         text("A - B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
-      } else if(this.name.contains("Mult")){
+      } else if (this.name.contains("Mult")) {
         text("A * B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
-      } else if(this.name.contains("Det")){
+      } else if (this.name.contains("Det")) {
         text("Det A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
-      } else if(this.name.contains("Switch")){
-        text("  A <-> B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("Switch")) {
+        text("A <-> B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
       }
-      rect(posX,posY,sizeOperation,sizeOperation);
+      rect(posX, posY, sizeOperation, sizeOperation);
       popMatrix();
     }
     if (this.name.contains("matrix")) {
@@ -77,30 +110,39 @@ class Buttons {
   }
 
   void update() {
-    if(mousePressed && mouseButton == LEFT && this.posY + sizeOperation > mouseY && this.posY < mouseY && this.posX+sizeOperation > mouseX && this.posX < mouseX){
-      if(this.name.contains("Switch")){
-        if(!clickTimeOut){
-          switchMatrix(); 
+    if (mousePressed && mouseButton == LEFT && this.posY + sizeOperation > mouseY && this.posY < mouseY && this.posX+sizeOperation > mouseX && this.posX < mouseX) {
+      if (this.name.contains("Switch")) {
+        if (!clickTimeOut) {
+          switchMatrix();
         }
         clickTimeOut = true;
-      } else if(this.name.contains("Add")){
-        if(!clickTimeOut){
-          println("add");
+      } else if (this.name.contains("Add")) {
+        MatrixOperator op = new MatrixOperator();
+        if (!clickTimeOut) {
+          Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
+          Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
+          try {
+            Matrix result = op.matrixAdd(m1, m2);
+            resultMatrix = setResultMatrix(result);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
         }
         clickTimeOut = true;
-      } else if(this.name.contains("Mult")){
-        if(!clickTimeOut){
-          println("mult"); 
+      } else if (this.name.contains("Mult")) {
+        if (!clickTimeOut) {
+          println("mult");
         }
         clickTimeOut = true;
-      } else if(this.name.contains("Sub")){
-        if(!clickTimeOut){
-          println("sub"); 
+      } else if (this.name.contains("Sub")) {
+        if (!clickTimeOut) {
+          println("sub");
         }
         clickTimeOut = true;
-      } else if(this.name.contains("Det")){
-        if(!clickTimeOut){
-          println("det"); 
+      } else if (this.name.contains("Det")) {
+        if (!clickTimeOut) {
+          println("det");
         }
         clickTimeOut = true;
       }
@@ -123,9 +165,9 @@ class Buttons {
               safeMatrix(1);
               matrix1 = new MatrixBlock[matrix1.length+1][matrix1[0].length];
               setMatrixFromBuffer(1);
-              for(int i = 0;  i < matrix2[0].length;i++){
-                for(int h = 0; h < matrix2.length; h++){
-                   matrix2[h][i].x += 50;   
+              for (int i = 0; i < matrix2[0].length; i++) {
+                for (int h = 0; h < matrix2.length; h++) {
+                  matrix2[h][i].x += 50;
                 }
               }
             }
@@ -144,9 +186,9 @@ class Buttons {
               safeMatrix(1);
               matrix1 = new MatrixBlock[matrix1.length-1][matrix1[0].length];
               setMatrixFromBuffer(1);
-              for(int i = 0;  i < matrix2[0].length;i++){
-                for(int h = 0; h < matrix2.length; h++){
-                   matrix2[h][i].x -= 50;   
+              for (int i = 0; i < matrix2[0].length; i++) {
+                for (int h = 0; h < matrix2.length; h++) {
+                  matrix2[h][i].x -= 50;
                 }
               }
             }

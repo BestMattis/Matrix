@@ -20,6 +20,7 @@ class MatrixBlock {
     stroke(255);
     noFill();
     textAlign(CENTER);
+    textSize(11);
     text(input, this.x+size/2+1, (this.y+size/2)+5);
     rect(this.x, this.y, size, size);
   }

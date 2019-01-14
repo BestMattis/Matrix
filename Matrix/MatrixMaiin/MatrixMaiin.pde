@@ -52,11 +52,6 @@ void setup() {
       matrix2[h-cols2-2][i] = new MatrixBlock(h, i);
     }
   }
-  for (int i = 0; i < cols2; i++) {
-    for (int h = rows2*2+4; h < rows2*3+4; h++) {
-      resultMatrix[h-(2*cols2)-4][i] = new MatrixBlock(h, i);
-    }
-  }
 }
 void draw() {
   background(0);
@@ -80,10 +75,19 @@ void draw() {
       matrix2[h][i].update();
     }
   }
+  if(resultMatrix[0][0] != null){
+    for (int i = 0; i < resultMatrix[0].length; i++) {
+      for (int h = 0; h < resultMatrix.length; h++) {
+        resultMatrix[h][i].show();
+        resultMatrix[h][i].update();
+      }
+    }
+  }
   stroke(255);
   line(0,346,width,346);
   line(250,346,250,height);
-  text("Result : ", 280,360);
+  textSize(10);
+  text("Result : ", 280,357);
 }
 
 void switchMatrix(){
