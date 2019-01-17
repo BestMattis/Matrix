@@ -38,17 +38,17 @@ class Buttons {
   }
   public String getNumberString(MatrixBlock[][] m) {
     String numberString = new String();
-      for (int i = 0; i < m[0].length; i++) {
-        for (int h = 0; h < m.length; h++) {
-          numberString += m[h][i].input;
-          if (h < m.length -1 ) {
-            numberString += ",";
-          }
-        }
-        if (i < m[0].length-1) {
-          numberString += ";";
+    for (int i = 0; i < m[0].length; i++) {
+      for (int h = 0; h < m.length; h++) {
+        numberString += m[h][i].input;
+        if (h < m.length -1 ) {
+          numberString += ",";
         }
       }
+      if (i < m[0].length-1) {
+        numberString += ";";
+      }
+    }
     return numberString;
   }
   void show() {
@@ -64,10 +64,28 @@ class Buttons {
         text("A - B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
       } else if (this.name.contains("Mult")) {
         text("A * B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
-      } else if (this.name.contains("Det")) {
+      } else if (this.name.contains("Skalar")) {
+        text("A * x", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("DetA")) {
         text("Det A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("DetB")) {
+        text("Det B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("InvA")) {
+        text("Inv A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("InvB")) {
+        text("Inv B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
       } else if (this.name.contains("Switch")) {
         text("A <-> B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("TransA")) {
+        text("Trans A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("TransB")) {
+        text("Trans B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+5);
+      } else if (this.name.contains("ToA")) {
+        text("Result", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2));
+        text("to A", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+10);
+      } else if (this.name.contains("ToB")) {
+        text("Result", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2));
+        text("to B", this.posX+sizeOperation/2+1, (this.posY+sizeOperation/2)+10);
       }
       rect(posX, posY, sizeOperation, sizeOperation);
       popMatrix();
@@ -158,9 +176,87 @@ class Buttons {
           }
         }
         clickTimeOut = true;
-      } else if (this.name.contains("Det")) {
+      } else if (this.name.contains("Skalar")) {
         if (!clickTimeOut) {
-          println("det");
+          println("a skalar");
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("DetA")) {
+        if (!clickTimeOut) {
+          MatrixOperator op = new MatrixOperator();
+          Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
+          try {
+            Double resultNum = op.matrixDet(m1);
+            resultMatrix = new MatrixBlock[1][1];
+            resultMatrix[0][0] = new MatrixBlock(5, 7);
+            resultMatrix[0][0].num = resultNum;
+            resultMatrix[0][0].input = Double.toString(resultNum);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("DetB")) {
+        if (!clickTimeOut) {
+          MatrixOperator op = new MatrixOperator();
+          Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
+          try {
+            Double resultNum = op.matrixDet(m2);
+            resultMatrix = new MatrixBlock[1][1];
+            resultMatrix[0][0] = new MatrixBlock(5, 7);
+            resultMatrix[0][0].num = resultNum;
+            resultMatrix[0][0].input = Double.toString(resultNum);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("InvA")) {
+        if (!clickTimeOut) {
+          println("invA");
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("InvB")) {
+        if (!clickTimeOut) {
+          println("invB");
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("TransA")) {
+        if (!clickTimeOut) {
+          MatrixOperator op = new MatrixOperator();
+          Matrix m1 = new Matrix(matrix1[0].length, matrix1.length, getNumberString(matrix1));
+          try {
+            Matrix result = op.matrixTransformation(m1);
+            resultMatrix = setResultMatrix(result);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
+        } 
+        clickTimeOut = true;
+      } else if (this.name.contains("TransB")) {
+        if (!clickTimeOut) {
+          MatrixOperator op = new MatrixOperator();
+          Matrix m2 = new Matrix(matrix2[0].length, matrix2.length, getNumberString(matrix2));
+          try {
+            Matrix result = op.matrixTransformation(m2);
+            resultMatrix = setResultMatrix(result);
+          } 
+          catch(Exception e) {
+            println(e);
+          }
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("ToA")) {
+        if (!clickTimeOut) {
+          println("ResultToA");
+        }
+        clickTimeOut = true;
+      } else if (this.name.contains("ToB")) {
+        if (!clickTimeOut) {
+          println("ResultToB");
         }
         clickTimeOut = true;
       }

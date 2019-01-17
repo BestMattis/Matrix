@@ -10,19 +10,24 @@ MatrixBlock[][] matrix2 = new MatrixBlock[rows2][cols2];
 MatrixBlock[][] bufferMatrix = new MatrixBlock[rows1][cols1];
 MatrixBlock[][] resultMatrix = new MatrixBlock[rows2][cols2];
 Buttons add = new Buttons(10,640,"operationAdd");
-Buttons mult = new Buttons(70,640,"operationMult");
-Buttons sub = new Buttons(130,640,"operationSub");
-Buttons det = new Buttons(190,640,"operationDet");
-Buttons switchAB = new Buttons(10,580,"operationSwitch");
+Buttons mult = new Buttons(130,640,"operationMult");
+Buttons sub = new Buttons(70,640,"operationSub");
+Buttons skalar = new Buttons(190,640,"operationSkalar");
+Buttons detA = new Buttons(10,356,"operationDetA");
+Buttons detB = new Buttons(70,356,"operationDetB");
+Buttons invA = new Buttons(10,416,"operationInvA");
+Buttons invB = new Buttons(70,416,"operationInvB");
+Buttons transA = new Buttons(10,476,"operationTransA");
+Buttons transB = new Buttons(70,476,"operationTransB");
+Buttons resultToA = new Buttons(190,356,"operationToA");
+Buttons resultToB = new Buttons(190,416,"operationToB");
+Buttons switchAB = new Buttons(10,580,"operationSwitch"); 
 Buttons matrix1RowsIncrease = new Buttons(10, 20, "matrix1RowsIncrease");
 Buttons matrix1ColsIncrease = new Buttons(20, 10, "matrix1ColsIncrease");
-
 Buttons matrix1RowsDecrease = new Buttons(30, 20, "matrix1RowsDecrease");
 Buttons matrix1ColsDecrease = new Buttons(40, 10, "matrix1ColsDecrease");
-
 Buttons matrix2RowsIncrease = new Buttons(110, 20, "matrix2RowsIncrease");
 Buttons matrix2RowsDecrease = new Buttons(130, 20, "matrix2RowsDecrease");
-
 Buttons matrix2ColsIncrease = new Buttons(120, 10, "matrix2ColsIncrease");
 Buttons matrix2ColsDecrease = new Buttons(140, 10, "matrix2ColsDecrease");
 ArrayList<Buttons> operations = new ArrayList<Buttons>(); 
@@ -40,7 +45,15 @@ void setup() {
   operations.add(add);
   operations.add(sub);
   operations.add(mult);
-  operations.add(det);
+  operations.add(skalar);
+  operations.add(detA);
+  operations.add(detB);
+  operations.add(invA);
+  operations.add(invB);
+  operations.add(transA);
+  operations.add(transB);
+  operations.add(resultToA);
+  operations.add(resultToB);
   operations.add(switchAB);
   for (int i = 0; i < cols1; i++) {
     for (int h = 0; h < rows1; h++) {
